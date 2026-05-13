@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      تحليل مسارات الأمن السيبراني | الاحتراف المبكر مقابل الاستقرار الأكاديمي
+    </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Tajawal", sans-serif;
+        background-color: #f5f5f4;
+        color: #292524;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 350px;
+        max-height: 450px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 400px;
+        }
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(229, 231, 235, 0.5);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border-radius: 1rem;
+      }
+      .nav-btn.active {
+        background-color: #1c1917;
+        color: #ffffff;
+      }
+      .section-content {
+        display: none;
+        animation: fadeIn 0.4s ease-in-out;
+      }
+      .section-content.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #d6d3d1;
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #a8a29e;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen custom-scrollbar">
+    <!-- Chosen Palette: Warm Neutrals (Stone/Sand) with Dark Gray/Black accents for text, and distinct indicators (Crimson for intensive/risk, Teal for stable/balanced). -->
+    <!-- Application Structure Plan: The SPA is designed as a tabbed executive dashboard. It groups the complex analysis into 5 logical sections matching the user's request. This structure prevents cognitive overload, allowing the user to seamlessly toggle between the Persona Overviews, Comparative Analytics (with Radar Chart), Challenges, Crisis Scenarios, and Contingency Plans. The navigation is persistent at the top for easy access. -->
+    <!-- Visualization & Content Choices: 1. Radar Chart (Chart.js): Chosen to effectively map and compare the multi-dimensional attributes (Technical, Social, Financial, Health) of both personas simultaneously. 2. Tabular/Card Layouts (HTML/Tailwind): Used for Pros/Cons and Plans to ensure readability of text-heavy analysis. 3. Unicode Icons: Used for visual cues without relying on SVGs or external images. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav
+      class="sticky top-0 z-50 glass-card m-4 p-4 flex flex-wrap justify-center gap-2 md:gap-4"
+    >
+      <button
+        onclick="switchSection('overview')"
+        id="btn-overview"
+        class="nav-btn active px-4 py-2 rounded-lg font-semibold transition-colors duration-200 hover:bg-stone-200"
+      >
+        التعريف بالمسارات
+      </button>
+      <button
+        onclick="switchSection('comparison')"
+        id="btn-comparison"
+        class="nav-btn px-4 py-2 rounded-lg font-semibold transition-colors duration-200 hover:bg-stone-200"
+      >
+        التحليل المقارن
+      </button>
+      <button
+        onclick="switchSection('challenges')"
+        id="btn-challenges"
+        class="nav-btn px-4 py-2 rounded-lg font-semibold transition-colors duration-200 hover:bg-stone-200"
+      >
+        التحديات والمعوقات
+      </button>
+      <button
+        onclick="switchSection('crisis')"
+        id="btn-crisis"
+        class="nav-btn px-4 py-2 rounded-lg font-semibold transition-colors duration-200 hover:bg-stone-200"
+      >
+        سيناريو الفشل الأكاديمي
+      </button>
+      <button
+        onclick="switchSection('verdict')"
+        id="btn-verdict"
+        class="nav-btn px-4 py-2 rounded-lg font-semibold transition-colors duration-200 hover:bg-stone-200"
+      >
+        التقييم والخطط البديلة
+      </button>
+    </nav>
+
+    <main class="container mx-auto px-4 pb-12 max-w-6xl">
+      <header class="text-center mb-10 mt-6">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-stone-900 mb-4">
+          تحليل استراتيجي لمسارات العمل في الأمن السيبراني
+        </h1>
+        <p class="text-lg text-stone-600 max-w-3xl mx-auto">
+          دراسة مقارنة متعمقة بين مسار "الاحتراف التقني المبكر" ومسار "الاستقرار
+          الأكاديمي المتوازن" لخريجي المعاهد التقنية، مع الأخذ بالاعتبار
+          المتغيرات النفسية، الأكاديمية، والمهنية.
+        </p>
+      </header>
+
+      <section id="overview" class="section-content active">
+        <div
+          class="mb-6 p-6 glass-card bg-stone-100 border-l-4 border-stone-800"
+        >
+          <h2 class="text-2xl font-bold mb-2">📌 نظرة عامة على الدراسة</h2>
+          <p class="text-stone-700 leading-relaxed">
+            يعرض هذا القسم الملف الشخصي الأساسي للحالتين قيد الدراسة. يمثل الشخص
+            الأول الاندفاع نحو الشغف التقني وسوق العمل متجاهلاً القواعد
+            التقليدية، بينما يمثل الشخص الثاني التخطيط المنهجي والبناء الأكاديمي
+            المستقر.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div
+            class="glass-card p-8 border-t-4 border-red-600 hover:shadow-lg transition-shadow"
+          >
+            <div class="text-4xl mb-4 text-center">🚀</div>
+            <h3 class="text-2xl font-bold text-center mb-4 text-red-700">
+              الشخص الأول: طالب الثراء والاحتراف المبكر
+            </h3>
+            <ul class="space-y-3 text-stone-700">
+              <li class="flex items-start">
+                <span class="ml-2 text-xl">▪️</span>
+                <strong>المسار الأكاديمي:</strong> معهد تقاني + جامعة افتراضية
+                (لم يكمل الهندسة التقليدية).
+              </li>
+              <li class="flex items-start">
+                <span class="ml-2 text-xl">▪️</span>
+                <strong>التركيز التقني:</strong> تطوير ذاتي عميق في الأمن
+                الهجومي واكتشاف الثغرات (Bug Bounty).
+              </li>
+              <li class="flex items-start">
+                <span class="ml-2 text-xl">▪️</span>
+                <strong>سوق العمل:</strong> دخول مبكر، دخل مادي سريع ومرتفع
+                نسبياً في البداية.
+              </li>
+              <li class="flex items-start">
+                <span class="ml-2 text-xl">▪️</span>
+                <strong>أسلوب الحياة:</strong> إهمال شديد للجوانب الاجتماعية،
+                الصحية، والتوازن النفسي.
+              </li>
+            </ul>
+          </div>
+
+          <div
+            class="glass-card p-8 border-t-4 border-teal-600 hover:shadow-lg transition-shadow"
+          >
+            <div class="text-4xl mb-4 text-center">⚖️</div>
+            <h3 class="text-2xl font-bold text-center mb-4 text-teal-700">
+              الشخص الثاني: طالب الاستقرار والتوازن
+            </h3>
+            <ul class="space-y-3 text-stone-700">
+              <li class="flex items-start">
+                <span class="ml-2 text-xl">▪️</span>
+                <strong>المسار الأكاديمي:</strong> معهد تقاني + إجازة في الهندسة
+                المعلوماتية (جامعة تقليدية).
+              </li>
+              <li class="flex items-start">
+                <span class="ml-2 text-xl">▪️</span>
+                <strong>التركيز التقني:</strong> تطور بطيء وتدريجي، تأسيس
+                مفاهيمي قوي.
+              </li>
+              <li class="flex items-start">
+                <span class="ml-2 text-xl">▪️</span>
+                <strong>سوق العمل:</strong> تأخر في الدخول حتى ما بعد التخرج،
+                تدرج وظيفي تقليدي.
+              </li>
+              <li class="flex items-start">
+                <span class="ml-2 text-xl">▪️</span>
+                <strong>أسلوب الحياة:</strong> حياة متوازنة، علاقات اجتماعية
+                جيدة، روتين صحي واستقرار نفسي.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="comparison" class="section-content">
+        <div
+          class="mb-6 p-6 glass-card bg-stone-100 border-l-4 border-stone-800"
+        >
+          <h2 class="text-2xl font-bold mb-2">
+            ⚖️ التحليل المقارن (الإيجابيات والسلبيات)
+          </h2>
+          <p class="text-stone-700 leading-relaxed">
+            نستعرض هنا مقارنة تفصيلية بين المسارين على الأصعدة التقنية، المالية،
+            والنفسية/الاجتماعية. الرسم البياني أدناه يوضح البصمة الشاملة لكل
+            شخصية.
+          </p>
+        </div>
+
+        <div class="glass-card p-6 mb-8">
+          <div class="chart-container">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="glass-card p-6">
+            <h3
+              class="text-xl font-bold mb-4 bg-red-100 text-red-800 p-2 rounded text-center"
+            >
+              مسار الشخص الأول (الاحتراف المبكر)
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <h4 class="font-bold text-stone-800 border-b pb-1 mb-2">
+                  💻 الصعيد التقني
+                </h4>
+                <p class="text-sm text-green-700 font-semibold mb-1">
+                  الإيجابيات:
+                </p>
+                <p class="text-sm text-stone-600 mb-2">
+                  خبرة عملية حقيقية مبكرة، مهارات هجومية متقدمة، قدرة عالية على
+                  التعلم الذاتي وحل المشكلات غير النمطية.
+                </p>
+                <p class="text-sm text-red-700 font-semibold mb-1">السلبيات:</p>
+                <p class="text-sm text-stone-600">
+                  فجوات في الأساسيات الأكاديمية (مثل هندسة الشبكات العميقة أو
+                  الخوارزميات)، عقلية موجهة لاكتشاف الثغرات فقط دون بناء أنظمة
+                  آمنة (Defensive).
+                </p>
+              </div>
+              <div>
+                <h4 class="font-bold text-stone-800 border-b pb-1 mb-2">
+                  💰 الصعيد المالي
+                </h4>
+                <p class="text-sm text-green-700 font-semibold mb-1">
+                  الإيجابيات:
+                </p>
+                <p class="text-sm text-stone-600 mb-2">
+                  استقلال مادي مبكر، عوائد مرتفعة من منصات مكافآت الثغرات (Bug
+                  Bounty) بالعملة الصعبة.
+                </p>
+                <p class="text-sm text-red-700 font-semibold mb-1">السلبيات:</p>
+                <p class="text-sm text-stone-600">
+                  دخل غير مستقر (متقلب حسب المواسم والثغرات)، غياب المزايا
+                  الوظيفية (تأمين طبي، تقاعد).
+                </p>
+              </div>
+              <div>
+                <h4 class="font-bold text-stone-800 border-b pb-1 mb-2">
+                  🧠 الصعيد النفسي والاجتماعي
+                </h4>
+                <p class="text-sm text-green-700 font-semibold mb-1">
+                  الإيجابيات:
+                </p>
+                <p class="text-sm text-stone-600 mb-2">
+                  شعور مبكر بالإنجاز، بناء سمعة في مجتمع القراصنة الأخلاقيين.
+                </p>
+                <p class="text-sm text-red-700 font-semibold mb-1">السلبيات:</p>
+                <p class="text-sm text-stone-600">
+                  عزلة اجتماعية حادة، تدهور الصحة البدنية بسبب الجلوس لساعات
+                  طويلة، خطر كبير للإرهاق والاستنزاف النفسي.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card p-6">
+            <h3
+              class="text-xl font-bold mb-4 bg-teal-100 text-teal-800 p-2 rounded text-center"
+            >
+              مسار الشخص الثاني (الاستقرار الأكاديمي)
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <h4 class="font-bold text-stone-800 border-b pb-1 mb-2">
+                  💻 الصعيد التقني
+                </h4>
+                <p class="text-sm text-green-700 font-semibold mb-1">
+                  الإيجابيات:
+                </p>
+                <p class="text-sm text-stone-600 mb-2">
+                  تأسيس هندسي صلب، فهم عميق لمعمارية الأنظمة، القدرة على العمل
+                  في مجالات الحماية والامتثال (Blue Team/GRC).
+                </p>
+                <p class="text-sm text-red-700 font-semibold mb-1">السلبيات:</p>
+                <p class="text-sm text-stone-600">
+                  تأخر في مواكبة أحدث تقنيات الهجوم، بطء في اكتساب "خبرة الشارع"
+                  التقنية التي لا تُدرس في الجامعات.
+                </p>
+              </div>
+              <div>
+                <h4 class="font-bold text-stone-800 border-b pb-1 mb-2">
+                  💰 الصعيد المالي
+                </h4>
+                <p class="text-sm text-green-700 font-semibold mb-1">
+                  الإيجابيات:
+                </p>
+                <p class="text-sm text-stone-600 mb-2">
+                  دخل مستقر ومضمون، مزايا وظيفية، مسار ترقية واضح يضمن زيادة
+                  الراتب مع الوقت.
+                </p>
+                <p class="text-sm text-red-700 font-semibold mb-1">السلبيات:</p>
+                <p class="text-sm text-stone-600">
+                  تأخر الدخل لسنوات (فترة الدراسة)، رواتب البداية (Entry-level)
+                  قد تكون منخفضة مقارنة بمكتشفي الثغرات.
+                </p>
+              </div>
+              <div>
+                <h4 class="font-bold text-stone-800 border-b pb-1 mb-2">
+                  🧠 الصعيد النفسي والاجتماعي
+                </h4>
+                <p class="text-sm text-green-700 font-semibold mb-1">
+                  الإيجابيات:
+                </p>
+                <p class="text-sm text-stone-600 mb-2">
+                  صحة نفسية وبدنية جيدة، شبكة علاقات اجتماعية ومهنية واسعة، قدرة
+                  على التعامل مع ضغوط العمل بمرونة.
+                </p>
+                <p class="text-sm text-red-700 font-semibold mb-1">السلبيات:</p>
+                <p class="text-sm text-stone-600">
+                  قد يعاني من "متلازمة المحتال" (Imposter Syndrome) عند مقارنة
+                  مهاراته العملية بمهارات زملائه الأصغر سناً في سوق العمل.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="challenges" class="section-content">
+        <div
+          class="mb-6 p-6 glass-card bg-stone-100 border-l-4 border-stone-800"
+        >
+          <h2 class="text-2xl font-bold mb-2">🚧 التحديات والمعوقات الحتمية</h2>
+          <p class="text-stone-700 leading-relaxed">
+            استكشف العقبات التي سيصطدم بها كل مسار عند الانخراط الكامل في بيئة
+            العمل الحقيقية وكيف تتجلى هذه التحديات بمرور الوقت.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="glass-card overflow-hidden">
+            <div
+              class="bg-red-800 text-white p-4 font-bold text-lg flex justify-between items-center cursor-pointer"
+              onclick="toggleDetails('chal-1')"
+            >
+              <span>عقبات مسار الاحتراف المبكر</span>
+              <span>⏬</span>
+            </div>
+            <div id="chal-1" class="p-6 bg-white space-y-4">
+              <div class="border-r-4 border-red-500 pr-4">
+                <h4 class="font-bold text-stone-800">
+                  1. الإرهاق الوظيفي الحاد (Severe Burnout)
+                </h4>
+                <p class="text-stone-600 text-sm mt-1">
+                  طبيعة Bug Bounty تعتمد على التنافسية الشديدة والعمل لساعات غير
+                  منتظمة. إهمال الصحة سيؤدي حتماً لانهيار جسدي أو ذهني في أواخر
+                  العشرينات.
+                </p>
+              </div>
+              <div class="border-r-4 border-red-500 pr-4">
+                <h4 class="font-bold text-stone-800">
+                  2. السقف الزجاجي المؤسسي (Corporate Glass Ceiling)
+                </h4>
+                <p class="text-stone-600 text-sm mt-1">
+                  عند الرغبة في الانتقال لشركات كبرى كـ (CISO أو مدير فريق
+                  أحمر)، سيصطدم بفلتر الموارد البشرية (HR) الذي يطلب شهادات
+                  أكاديمية أو مهارات إدارية (Soft Skills) يفتقر إليها تماماً.
+                </p>
+              </div>
+              <div class="border-r-4 border-red-500 pr-4">
+                <h4 class="font-bold text-stone-800">
+                  3. تشتت الانتباه وفقدان الشغف
+                </h4>
+                <p class="text-stone-600 text-sm mt-1">
+                  الاعتماد على الدوبامين السريع (مكافآت الثغرات) يجعل المهام
+                  الروتينية لتوثيق الاختراق وكتابة التقارير مملة جداً، مما يضعف
+                  قيمته كمستشار أمني محترف.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card overflow-hidden">
+            <div
+              class="bg-teal-800 text-white p-4 font-bold text-lg flex justify-between items-center cursor-pointer"
+              onclick="toggleDetails('chal-2')"
+            >
+              <span>عقبات مسار الاستقرار الأكاديمي</span>
+              <span>⏬</span>
+            </div>
+            <div id="chal-2" class="p-6 bg-white space-y-4">
+              <div class="border-r-4 border-teal-500 pr-4">
+                <h4 class="font-bold text-stone-800">
+                  1. ضعف الخبرة العملية الحقيقية (Lack of Hands-on Experience)
+                </h4>
+                <p class="text-stone-600 text-sm mt-1">
+                  سيجد نفسه في المقابلات التقنية غير قادر على مجاراة من يملكون
+                  خبرة عملية، الأكاديميا لا تُعلّم أحدث أساليب تجاوز الحمايات
+                  المتقدمة.
+                </p>
+              </div>
+              <div class="border-r-4 border-teal-500 pr-4">
+                <h4 class="font-bold text-stone-800">
+                  2. صدمة التطور السريع (Pacing Shock)
+                </h4>
+                <p class="text-stone-600 text-sm mt-1">
+                  مجال الأمن السيبراني يتغير يومياً. العقلية الأكاديمية البطيئة
+                  قد تعيق قدرته على التكيف السريع وتعلم أدوات جديدة باستمرار
+                  خارج المنهج.
+                </p>
+              </div>
+              <div class="border-r-4 border-teal-500 pr-4">
+                <h4 class="font-bold text-stone-800">
+                  3. التأخر المالي النسبي
+                </h4>
+                <p class="text-stone-600 text-sm mt-1">
+                  البدء براتب مهندس مبتدئ (Junior) في سن متأخرة قد يسبب إحباطاً
+                  عند مقارنة نفسه بآخرين حققوا ثروات من العمل الحر في نفس العمر.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="crisis" class="section-content">
+        <div
+          class="mb-6 p-6 glass-card bg-stone-100 border-l-4 border-orange-600"
+        >
+          <h2 class="text-2xl font-bold mb-2">
+            ⚠️ سيناريو الفشل الأكاديمي الحرج
+          </h2>
+          <p class="text-stone-700 leading-relaxed">
+            ماذا لو فشل أي منهما في إكمال دراسته الجامعية (سواء الافتراضية أو
+            التقليدية) واكتفى بشهادة "المعهد التقاني"؟ هذا القسم يحلل الأثر وطرق
+            التعويض (Recovery Path).
+          </p>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-6 mt-8">
+          <div class="flex-1 glass-card p-6 border-t-8 border-orange-500">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <span class="text-2xl ml-2">🔥</span> تأثير الفشل على الشخص الأول
+            </h3>
+            <p class="text-stone-700 mb-4">
+              <strong>الأثر: متوسط.</strong> هو أصلاً لا يعتمد على الشهادة بل
+              على مهاراته ودخله من العمل الحر. لكن الفشل سيغلق أمامه نهائياً
+              أبواب الشركات الكبرى التي تضع الشهادة كشرط إلزامي (Compliance).
+            </p>
+            <div class="bg-orange-50 p-4 rounded-lg">
+              <h4 class="font-bold text-orange-800 mb-2">
+                🛡️ خطة التعويض (الشهادات المهنية):
+              </h4>
+              <ul
+                class="list-disc list-inside text-sm text-stone-700 space-y-1"
+              >
+                <li>
+                  الحصول فوراً على شهادة <strong>OSCP</strong> (Offensive
+                  Security Certified Professional) لتكون البديل الأقوى للشهادة
+                  الجامعية.
+                </li>
+                <li>
+                  التدرج نحو شهادات متقدمة مثل <strong>OSEP</strong> أو
+                  <strong>OSWE</strong> لإثبات خبرة استثنائية.
+                </li>
+                <li>
+                  بناء هوية رقمية قوية (مدونة، أدوات مفتوحة المصدر على GitHub)
+                  ليكون الـ Portfolio هو سيرته الذاتية.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex-1 glass-card p-6 border-t-8 border-red-700">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+              <span class="text-2xl ml-2">💥</span> تأثير الفشل على الشخص الثاني
+            </h3>
+            <p class="text-stone-700 mb-4">
+              <strong>الأثر: كارثي ومُدمر.</strong> خطته بأكملها مبنية على
+              الحصول على الإجازة الهندسية للدخول الآمن للشركات. بدونها، هو يملك
+              شهادة معهد فقط، وبلا خبرة عملية تذكر في الأمن السيبراني.
+            </p>
+            <div class="bg-red-50 p-4 rounded-lg">
+              <h4 class="font-bold text-red-900 mb-2">
+                🛡️ خطة التعويض (الإنقاذ العاجل):
+              </h4>
+              <ul
+                class="list-disc list-inside text-sm text-stone-700 space-y-1"
+              >
+                <li>
+                  التخلي مؤقتاً عن حلم الهندسة، والنزول الميداني للعمل كـ
+                  <strong>SOC Analyst (Tier 1)</strong> بأي راتب لاكتساب الخبرة.
+                </li>
+                <li>
+                  دراسة شهادات التأسيس السريع:
+                  <strong>CompTIA Security+</strong> و <strong>CySA+</strong>،
+                  أو شهادات Blue Team مثل <strong>BTL1</strong>.
+                </li>
+                <li>
+                  بعد سنتين من العمل المستمر، يمكنه التحضير لـ OSCP أو CISSP
+                  لتعويض النقص الأكاديمي بخبرة وشهادات موثوقة.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="verdict" class="section-content">
+        <div
+          class="mb-6 p-6 glass-card bg-stone-100 border-l-4 border-stone-800"
+        >
+          <h2 class="text-2xl font-bold mb-2">
+            🏆 التقييم الشامل والخطط البديلة (Plan B)
+          </h2>
+          <p class="text-stone-700 leading-relaxed">
+            أيهما الأفضل بناءً على معطيات سوق العمل الحالي في الأمن السيبراني؟
+            وما هي خطط الطوارئ لكليهما؟
+          </p>
+        </div>
+
+        <div
+          class="glass-card p-8 mb-8 bg-gradient-to-br from-stone-50 to-stone-200"
+        >
+          <h3
+            class="text-2xl font-bold mb-4 text-stone-900 border-b-2 border-stone-300 pb-2"
+          >
+            القرار التحليلي والموضوعي
+          </h3>
+          <p class="text-stone-700 mb-4 text-lg">
+            سوق الأمن السيبراني يميل حالياً نحو
+            <strong>المهارات العملية (Hands-on Skills)</strong> أكثر من الشهادات
+            الأكاديمية البحتة. ومع ذلك، لا يوجد فائز مطلق؛ التفوق يعتمد على سياق
+            العمل:
+          </p>
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-start bg-white p-3 rounded shadow-sm">
+              <span class="text-xl ml-3">🥇</span>
+              <div>
+                <strong>متى يتفوق الشخص الأول؟</strong> في اقتصاد العمل الحر
+                (Gig Economy)، الشركات الناشئة المرنة، أدوار الـ Red Teaming
+                المتقدمة، وشركات أبحاث الثغرات التي تبحث عن المواهب الاستثنائية
+                وتتجاهل الشهادات.
+              </div>
+            </li>
+            <li class="flex items-start bg-white p-3 rounded shadow-sm">
+              <span class="text-xl ml-3">🥇</span>
+              <div>
+                <strong>متى يتفوق الشخص الثاني؟</strong> في القطاعات الحكومية،
+                البنوك، الشركات متعددة الجنسيات (Enterprises) التي تتطلب
+                امتثالاً (Compliance)، مناصب الحوكمة (GRC)، والأدوار الإدارية
+                كإدارة أمن المعلومات.
+              </div>
+            </li>
+          </ul>
+          <p
+            class="text-stone-800 font-bold bg-yellow-100 p-4 rounded-lg border border-yellow-300"
+          >
+            💡 الخلاصة: مسار الشخص الثاني (الاستقرار) هو الأقل خطورة و"الأكثر
+            استدامة" على المدى الطويل. بينما مسار الشخص الأول يحمل "عائداً أعلى
+            مبكراً" ولكنه يمثل قنبلة موقوتة صحياً ونفسياً مالم يصحح مساره.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="glass-card p-6 border-r-4 border-stone-600">
+            <h4 class="text-lg font-bold mb-3 flex items-center">
+              <span class="ml-2">🔄</span> الخطة البديلة (Plan B) للشخص الأول
+            </h4>
+            <p class="text-sm text-stone-600 mb-3">
+              في حال الانهيار الصحي أو جفاف سوق الـ Bug Bounty:
+            </p>
+            <ul class="list-disc list-inside text-sm space-y-2 text-stone-700">
+              <li>
+                استثمار الأموال المكتسبة مبكراً في أصول تدر دخلاً سلبياً
+                (Passive Income).
+              </li>
+              <li>
+                تأسيس شركة استشارات أمنية صغيرة (Boutique Security Firm) وراء
+                الكواليس وترك الإدارة لشريك يمتلك المهارات الإدارية.
+              </li>
+              <li>
+                الانتقال من الهجوم إلى تقديم دورات تدريبية متخصصة ونقل الخبرة
+                العميقة للآخرين كمدرب مستقل.
+              </li>
+            </ul>
+          </div>
+          <div class="glass-card p-6 border-r-4 border-stone-600">
+            <h4 class="text-lg font-bold mb-3 flex items-center">
+              <span class="ml-2">🔄</span> الخطة البديلة (Plan B) للشخص الثاني
+            </h4>
+            <p class="text-sm text-stone-600 mb-3">
+              في حال عدم التمكن من المنافسة في المناصب التقنية العميقة:
+            </p>
+            <ul class="list-disc list-inside text-sm space-y-2 text-stone-700">
+              <li>
+                التحول إلى مجال إدارة المخاطر والامتثال (GRC)، حيث المهندسون
+                مطلوبون لفهم الأنظمة وتطبيق المعايير (مثل ISO 27001).
+              </li>
+              <li>
+                التخصص في هندسة السحابة الآمنة (Cloud Security Architecture)،
+                وهي تتطلب فهماً معمارياً أكثر من المهارات الهجومية السريعة.
+              </li>
+              <li>
+                الاتجاه نحو المبيعات التقنية (Pre-Sales Engineer) لاستغلال
+                مهارات التواصل والهندسة معاً.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-6 text-center text-sm">
+      <p>
+        تم إعداد هذا التقرير الاستراتيجي التفاعلي لتوجيه خريجي المعاهد التقنية.
+        يرجى أخذ السياق الشخصي والمكاني بعين الاعتبار.
+      </p>
+    </footer>
+
+    <script>
+      // Data and Logic for Interactive Elements
+
+      // 1. Navigation Logic
+      function switchSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll(".section-content").forEach((el) => {
+          el.classList.remove("active");
+        });
+        // Show targeted section
+        document.getElementById(sectionId).classList.add("active");
+
+        // Update button styles
+        document.querySelectorAll(".nav-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        document.getElementById("btn-" + sectionId).classList.add("active");
+
+        // Render chart if comparison tab is clicked and chart doesn't exist
+        if (sectionId === "comparison" && !window.radarChartInstance) {
+          initRadarChart();
+        }
+      }
+
+      // 2. Accordion Logic for Challenges
+      function toggleDetails(id) {
+        const el = document.getElementById(id);
+        if (el.style.display === "none") {
+          el.style.display = "block";
+        } else {
+          el.style.display = "none";
+        }
+      }
+
+      // Initialize accordion state
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("chal-1").style.display = "block";
+        document.getElementById("chal-2").style.display = "block";
+      });
+
+      // 3. Chart.js Visualization Logic
+      window.radarChartInstance = null;
+
+      function initRadarChart() {
+        const ctx = document.getElementById("radarChart").getContext("2d");
+
+        Chart.defaults.font.family = "'Tajawal', sans-serif";
+        Chart.defaults.color = "#57534e";
+
+        const data = {
+          labels: [
+            ["المهارة التقنية", "(الهجومية)"],
+            ["الأساس الأكاديمي", "(والهندسي)"],
+            ["الدخل المالي", "(المدى القصير)"],
+            ["الاستقرار الوظيفي", "(المدى الطويل)"],
+            ["الصحة البدنية", "(والنفسية)"],
+            ["الحياة الاجتماعية", "(والعلاقات)"],
+          ],
+          datasets: [
+            {
+              label: "الشخص الأول (الاحتراف المبكر)",
+              data: [95, 30, 90, 40, 20, 15],
+              fill: true,
+              backgroundColor: "rgba(220, 38, 38, 0.2)",
+              borderColor: "rgb(220, 38, 38)",
+              pointBackgroundColor: "rgb(220, 38, 38)",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "rgb(220, 38, 38)",
+            },
+            {
+              label: "الشخص الثاني (الاستقرار المتوازن)",
+              data: [50, 90, 40, 85, 80, 85],
+              fill: true,
+              backgroundColor: "rgba(13, 148, 136, 0.2)",
+              borderColor: "rgb(13, 148, 136)",
+              pointBackgroundColor: "rgb(13, 148, 136)",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "rgb(13, 148, 136)",
+            },
+          ],
+        };
+
+        const config = {
+          type: "radar",
+          data: data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  font: {
+                    size: 14,
+                    family: "'Tajawal', sans-serif",
+                  },
+                  padding: 20,
+                },
+              },
+              tooltip: {
+                backgroundColor: "rgba(28, 25, 23, 0.9)",
+                titleFont: { size: 14, family: "'Tajawal', sans-serif" },
+                bodyFont: { size: 14, family: "'Tajawal', sans-serif" },
+                padding: 12,
+                rtl: true,
+              },
+            },
+            scales: {
+              r: {
+                angleLines: {
+                  color: "rgba(0, 0, 0, 0.1)",
+                },
+                grid: {
+                  color: "rgba(0, 0, 0, 0.1)",
+                },
+                pointLabels: {
+                  font: {
+                    size: 12,
+                    family: "'Tajawal', sans-serif",
+                  },
+                  color: "#292524",
+                },
+                ticks: {
+                  backdropColor: "transparent",
+                  color: "#a8a29e",
+                  stepSize: 20,
+                  max: 100,
+                  min: 0,
+                },
+              },
+            },
+          },
+        };
+
+        window.radarChartInstance = new Chart(ctx, config);
+      }
+    </script>
+  </body>
+</html>
